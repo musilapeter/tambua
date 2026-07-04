@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <!-- SEO Meta Tags -->
+    <title>Tambua — Sauti Yako ni Kenya | Civic Literacy Platform</title>
+    <meta name="description" content="Tambua empowers Kenyan citizens with AI-powered civic literacy. Explore bills, understand legislation, and make your voice heard. Sauti Yako ni Kenya — Your Voice is Kenya.">
+    <meta name="keywords" content="Tambua, Kenya, civic literacy, bills, legislation, parliament, democracy, AI, civic engagement">
+    <meta name="author" content="Tambua Team">
+    <meta name="robots" content="index, follow">
+
+    <!-- Open Graph -->
+    <meta property="og:title" content="Tambua — Sauti Yako ni Kenya">
+    <meta property="og:description" content="AI-powered civic literacy platform for Kenyan citizens. Explore bills, understand legislation, make your voice count.">
+    <meta property="og:type" content="website">
+    <meta property="og:image" content="/static/images/tambua_logo.png">
+    <meta property="og:locale" content="en_KE">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Tambua — Sauti Yako ni Kenya">
+    <meta name="twitter:description" content="AI-powered civic literacy platform for Kenyan citizens.">
+
+    <!-- Theme -->
+    <meta name="theme-color" content="#0a0a0f">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+    <!-- Google Font: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="/static/images/tambua_logo.png">
+
+    <!-- Stylesheet -->
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+
+    <!-- ═══════════════════════════════════════════ -->
+    <!-- NAVIGATION BAR (Fixed Top)                 -->
+    <!-- ═══════════════════════════════════════════ -->
+    <header class="nav-bar" id="navbar">
+        <div class="nav-container">
+            <!-- Brand -->
+            <a href="#" class="nav-brand" onclick="navigateTo('home'); return false;">
+                <img src="/static/images/tambua_logo.png" alt="Tambua Logo" class="nav-logo" onerror="this.style.display='none'">
+                <div class="nav-brand-text">
+                    <span class="nav-title">TAMBUA</span>
+                    <span class="nav-tagline" data-i18n="tagline">Sauti Yako ni Kenya</span>
+                </div>
+            </a>
+
+            <!-- Language Selector -->
+            <div class="nav-lang">
+                <select id="language-select" class="lang-select" onchange="setLanguage(this.value)" aria-label="Select language">
+                    <option value="en">🇬🇧 English</option>
+                    <option value="sw">🇰🇪 Kiswahili</option>
+                    <option value="ki">🏔️ Kikuyu</option>
+                    <option value="sh">🏙️ Sheng</option>
+                    <option value="lu">🌊 Luo</option>
+                    <option value="ka">🏃 Kalenjin</option>
+                </select>
+            </div>
+
+            <!-- Theme Toggler -->
+            <div class="nav-theme">
+                <button id="theme-toggle" class="theme-toggle-btn" onclick="toggleTheme()" aria-label="Toggle theme" title="Toggle light/dark theme">
+                    <span class="theme-toggle-icon">🌓</span>
+                </button>
+            </div>
+
+            <!-- Mobile Menu Toggle -->
+            <button class="nav-toggle" id="nav-toggle" aria-label="Toggle navigation" onclick="toggleMobileNav()">
+                <span class="hamburger"></span>
+                <span class="hamburger"></span>
+                <span class="hamburger"></span>
+            </button>
+
+            <!-- Navigation Links -->
+            <nav class="nav-links" id="nav-links">
+                <a href="#" class="nav-link active" data-section="home" data-i18n="nav_home" onclick="navigateTo('home'); return false;">🏠 Home</a>
+                <a href="#" class="nav-link" data-section="bills" data-i18n="nav_bills" onclick="navigateTo('bills'); return false;">📜 Bills</a>
+                <a href="#" class="nav-link" data-section="recommendations" data-i18n="nav_recommendations" onclick="navigateTo('recommendations'); return false;">⭐ Recommendations</a>
+                <a href="#" class="nav-link" data-section="forums" data-i18n="nav_forums" onclick="navigateTo('forums'); return false;">🏛️ Forums</a>
+                <a href="#" class="nav-link" data-section="profile" data-i18n="nav_profile" onclick="navigateTo('profile'); return false;">👤 Profile</a>
+            </nav>
+
+            <!-- Profile Avatar -->
+            <button class="profile-avatar" id="profile-avatar" onclick="navigateTo('profile')" aria-label="View profile">
+                <span class="avatar-initials" id="avatar-initials">U</span>
+            </button>
+        </div>
+    </header>
+
+    <!-- ═══════════════════════════════════════════ -->
+    <!-- TOAST NOTIFICATIONS                        -->
+    <!-- ═══════════════════════════════════════════ -->
+    <div class="toast-container" id="toast-container"></div>
+
+    <!-- ═══════════════════════════════════════════ -->
+    <!-- MAIN CONTENT                               -->
+    <!-- ═══════════════════════════════════════════ -->
+    <main class="main-content" id="main-content">
+
+        <!-- ─── SECTION 1: HERO / WELCOME ─── -->
+        <section class="section section-hero active" id="home-section">
+            <div class="container">
+                <div class="hero-content">
+                    <div class="hero-badge">🇰🇪 <span data-i18n="hero_badge">Civic Literacy for All Kenyans</span></div>
+                    <h1 class="hero-title">
+                        <span class="hero-title-main" data-i18n="hero_title">Understand Your Laws.</span><br>
+                        <span class="hero-title-accent" data-i18n="hero_title_accent">Shape Your Future.</span>
+                    </h1>
+                    <p class="hero-description" data-i18n="hero_desc">
+                        Tambua uses AI to break down complex legislation into simple language you understand.
+                        Ask questions, get summaries in your language, and make your voice heard in Kenya's democracy.
+                    </p>
+                    <div class="hero-actions">
+                        <button class="btn btn-primary btn-lg" onclick="navigateTo('bills')">
+                            <span data-i18n="hero_cta">📜 Explore Bills</span>
+                        </button>
+                        <button class="btn btn-outline btn-lg" onclick="navigateTo('recommendations')">
+                            <span data-i18n="hero_cta2">⭐ Get Recommendations</span>
+                        </button>
+                    </div>
+                    <div class="hero-stats">
+                        <div class="stat-item">
+                            <span class="stat-number" id="stat-bills">0</span>
+                            <span class="stat-label" data-i18n="stat_bills">Bills Available</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-number" id="stat-languages">6</span>
+                            <span class="stat-label" data-i18n="stat_languages">Languages</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-number" id="stat-counties">47</span>
+                            <span class="stat-label" data-i18n="stat_counties">Counties</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="hero-visual">
+                    <div class="hero-glow"></div>
+                    <div class="hero-shield">🛡️</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ─── SECTION 2: BILLS GRID ─── -->
+        <section class="section" id="bills-section">
+            <div class="container">
+                <div class="section-header">
+                    <h2 class="section-title" data-i18n="bills_title">📜 Legislative Bills</h2>
+                    <p class="section-subtitle" data-i18n="bills_subtitle">Browse current and past legislation before the Kenyan Parliament</p>
+                </div>
+
+                <!-- Filters -->
+                <div class="filter-bar">
+                    <div class="input-group">
+                        <span class="input-icon">🔍</span>
+                        <input type="text" id="bills-search" class="input-field" data-i18n-placeholder="bills_search_placeholder" placeholder="Search bills..." oninput="filterBills(this.value)">
+                    </div>
+                    <div class="filter-chips">
+                        <button class="chip active" data-filter="all" onclick="filterByStatus('all', this)" data-i18n="filter_all">All</button>
+                        <button class="chip" data-filter="active" onclick="filterByStatus('active', this)" data-i18n="filter_active">🟢 Active</button>
+                        <button class="chip" data-filter="passed" onclick="filterByStatus('passed', this)" data-i18n="filter_passed">🟡 Passed</button>
+                        <button class="chip" data-filter="rejected" onclick="filterByStatus('rejected', this)" data-i18n="filter_rejected">🔴 Rejected</button>
+                    </div>
+                </div>
+
+                <!-- Bills Grid -->
+                <div class="bill-grid" id="bills-grid">
+                    <!-- Skeleton loaders -->
+                    <div class="card skeleton-card"><div class="skeleton skeleton-title"></div><div class="skeleton skeleton-text"></div><div class="skeleton skeleton-badge"></div></div>
+                    <div class="card skeleton-card"><div class="skeleton skeleton-title"></div><div class="skeleton skeleton-text"></div><div class="skeleton skeleton-badge"></div></div>
+                    <div class="card skeleton-card"><div class="skeleton skeleton-title"></div><div class="skeleton skeleton-text"></div><div class="skeleton skeleton-badge"></div></div>
+                    <div class="card skeleton-card"><div class="skeleton skeleton-title"></div><div class="skeleton skeleton-text"></div><div class="skeleton skeleton-badge"></div></div>
+                    <div class="card skeleton-card"><div class="skeleton skeleton-title"></div><div class="skeleton skeleton-text"></div><div class="skeleton skeleton-badge"></div></div>
+                    <div class="card skeleton-card"><div class="skeleton skeleton-title"></div><div class="skeleton skeleton-text"></div><div class="skeleton skeleton-badge"></div></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ─── SECTION 3: BILL DETAIL / INTERACTION ─── -->
+        <section class="section" id="bill-detail">
+            <div class="container">
+                <!-- Back Button -->
+                <button class="btn btn-outline btn-back" onclick="navigateTo('bills')">
+                    ← <span data-i18n="back_to_bills">Back to Bills</span>
+                </button>
+
+                <div class="bill-detail-layout">
+                    <!-- Bill Info -->
+                    <div class="bill-info-card card">
+                        <div class="bill-detail-header">
+                            <span class="badge" id="detail-badge">Active</span>
+                            <span class="bill-category" id="detail-category"></span>
+                        </div>
+                        <h2 class="bill-detail-title" id="detail-title">Bill Title</h2>
+                        <p class="bill-detail-desc" id="detail-description">Bill description goes here...</p>
+                        <div class="bill-meta">
+                            <span class="meta-item">📅 <span id="detail-date"></span></span>
+                            <span class="meta-item">🏛️ <span id="detail-sponsor"></span></span>
+                        </div>
+                    </div>
+
+                    <!-- Action Buttons -->
+                    <div class="action-buttons">
+                        <button class="btn btn-action" onclick="generateSummary()" id="btn-summary">
+                            <span class="btn-action-icon">📝</span>
+                            <span data-i18n="action_summary">Summary</span>
+                        </button>
+                        <button class="btn btn-action" onclick="translateBill()" id="btn-translate">
+                            <span class="btn-action-icon">🌍</span>
+                            <span data-i18n="action_translate">Translate</span>
+                        </button>
+                        <button class="btn btn-action" onclick="analyzeBill()" id="btn-analyze">
+                            <span class="btn-action-icon">⚖️</span>
+                            <span data-i18n="action_analyze">Analyze Impact</span>
+                        </button>
+                        <button class="btn btn-action" onclick="getCivicGuidance()" id="btn-guidance">
+                            <span class="btn-action-icon">🤝</span>
+                            <span data-i18n="action_guidance">Civic Guidance</span>
+                        </button>
+                    </div>
+
+                    <!-- AI Response Area -->
+                    <div class="ai-response-area card" id="ai-response-area" style="display:none;">
+                        <div class="ai-response-header">
+                            <span class="ai-label">🤖 <span data-i18n="ai_response">AI Response</span></span>
+                            <button class="btn btn-icon" onclick="speakResponse()" title="Listen" aria-label="Listen to response">🔊</button>
+                        </div>
+                        <div class="ai-response-content" id="ai-response-content">
+                            <div class="loading-spinner"></div>
+                        </div>
+                        <div class="ai-response-actions">
+                            <button class="btn btn-outline btn-sm" onclick="downloadCurrentResponse()">
+                                ⬇️ <span data-i18n="download">Download</span>
+                            </button>
+                            <button class="btn btn-outline btn-sm" onclick="shareCurrentResponse()">
+                                📤 <span data-i18n="share">Share</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Question Input -->
+                    <div class="question-input-area card">
+                        <h3 data-i18n="ask_question_title">💬 Ask a Question About This Bill</h3>
+                        <div class="question-input-group">
+                            <div class="input-group input-group-lg">
+                                <span class="input-icon">💬</span>
+                                <input type="text" id="question-input" class="input-field" data-i18n-placeholder="ask_placeholder" placeholder="Ask anything about this bill..." onkeydown="if(event.key==='Enter')askQuestion()">
+                            </div>
+                            <button class="btn btn-primary" onclick="askQuestion()" id="btn-ask">
+                                <span data-i18n="ask_btn">Ask</span>
+                            </button>
+                            <button class="mic-button" id="mic-btn-question"
+                                    onmousedown="startVoiceInput('question')" onmouseup="stopVoiceInput('question')"
+                                    ontouchstart="startVoiceInput('question')" ontouchend="stopVoiceInput('question')"
+                                    aria-label="Hold to speak">
+                                <span class="mic-icon">🎤</span>
+                                <span class="mic-pulse"></span>
+                            </button>
+                        </div>
+                        <p class="mic-hint" data-i18n="mic_hint">🎤 Hold the microphone button to speak your question</p>
+                    </div>
+
+                    <!-- Feedback Section inline -->
+                    <div class="feedback-inline card" id="bill-feedback-area">
+                        <h3 data-i18n="feedback_title">📣 Share Your Stance on This Bill</h3>
+                        <div class="stance-toggle" id="stance-toggle">
+                            <button class="stance-btn stance-support" data-stance="support" onclick="selectStance('support', this)">
+                                👍 <span data-i18n="support">Support</span>
+                            </button>
+                            <button class="stance-btn stance-oppose" data-stance="oppose" onclick="selectStance('oppose', this)">
+                                👎 <span data-i18n="oppose">Oppose</span>
+                            </button>
+                            <button class="stance-btn stance-neutral" data-stance="neutral" onclick="selectStance('neutral', this)">
+                                🤔 <span data-i18n="neutral">Neutral</span>
+                            </button>
+                        </div>
+                        <textarea id="feedback-comment" class="textarea" data-i18n-placeholder="feedback_placeholder" placeholder="Share your thoughts on this bill..." rows="3"></textarea>
+                        <div class="feedback-actions">
+                            <button class="mic-button mic-button-sm" id="mic-btn-feedback"
+                                    onmousedown="startVoiceInput('feedback')" onmouseup="stopVoiceInput('feedback')"
+                                    ontouchstart="startVoiceInput('feedback')" ontouchend="stopVoiceInput('feedback')"
+                                    aria-label="Hold to speak feedback">
+                                <span class="mic-icon">🎤</span>
+                                <span class="mic-pulse"></span>
+                            </button>
+                            <button class="btn btn-primary" onclick="submitBillFeedback()" id="btn-submit-feedback">
+                                📤 <span data-i18n="submit_feedback">Submit Feedback</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ─── SECTION 4: RECOMMENDATIONS ─── -->
+        <section class="section" id="recommendations-section">
+            <div class="container">
+                <div class="section-header">
+                    <h2 class="section-title" data-i18n="rec_title">⭐ Recommended For You</h2>
+                    <p class="section-subtitle" data-i18n="rec_subtitle">AI-powered bill recommendations based on your interests and history</p>
+                </div>
+
+                <!-- Recommended Bills -->
+                <h3 class="subsection-title" data-i18n="rec_bills_title">📜 Bills You Might Care About</h3>
+                <div class="bill-grid" id="recommended-grid">
+                    <div class="card skeleton-card"><div class="skeleton skeleton-title"></div><div class="skeleton skeleton-text"></div></div>
+                    <div class="card skeleton-card"><div class="skeleton skeleton-title"></div><div class="skeleton skeleton-text"></div></div>
+                    <div class="card skeleton-card"><div class="skeleton skeleton-title"></div><div class="skeleton skeleton-text"></div></div>
+                </div>
+
+                <!-- Predictions -->
+                <h3 class="subsection-title" data-i18n="pred_title">📊 Outcome Predictions</h3>
+                <div class="predictions-grid" id="predictions-grid">
+                    <div class="card skeleton-card"><div class="skeleton skeleton-title"></div><div class="skeleton skeleton-bar"></div></div>
+                    <div class="card skeleton-card"><div class="skeleton skeleton-title"></div><div class="skeleton skeleton-bar"></div></div>
+                </div>
+
+                <!-- Past Outcomes -->
+                <h3 class="subsection-title" data-i18n="past_title">📋 Past Bill Outcomes</h3>
+                <div class="bill-grid" id="past-outcomes-grid">
+                    <div class="card skeleton-card"><div class="skeleton skeleton-title"></div><div class="skeleton skeleton-text"></div></div>
+                    <div class="card skeleton-card"><div class="skeleton skeleton-title"></div><div class="skeleton skeleton-text"></div></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ─── SECTION 5: PAST BILLS & RULINGS ─── -->
+        <section class="section" id="past-bills-section">
+            <div class="container">
+                <div class="section-header">
+                    <h2 class="section-title" data-i18n="past_bills_title">🏛️ Past Bills & Rulings</h2>
+                    <p class="section-subtitle" data-i18n="past_bills_subtitle">Historical legislation and their outcomes</p>
+                </div>
+                <div class="bill-grid" id="past-bills-grid">
+                    <div class="card skeleton-card"><div class="skeleton skeleton-title"></div><div class="skeleton skeleton-text"></div></div>
+                    <div class="card skeleton-card"><div class="skeleton skeleton-title"></div><div class="skeleton skeleton-text"></div></div>
+                    <div class="card skeleton-card"><div class="skeleton skeleton-title"></div><div class="skeleton skeleton-text"></div></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ─── SECTION 6: PUBLIC FORUMS ─── -->
+        <section class="section" id="forums-section">
+            <div class="container">
+                <div class="section-header">
+                    <h2 class="section-title" data-i18n="forums_title">🏛️ Public Participation Forums</h2>
+                    <p class="section-subtitle" data-i18n="forums_subtitle">Find public forums and civic events near you</p>
+                </div>
+
+                <!-- County Selector -->
+                <div class="filter-bar">
+                    <div class="input-group">
+                        <span class="input-icon">📍</span>
+                        <select id="county-select" class="input-field select-field" onchange="loadForums(this.value)">
+                            <option value="" data-i18n="select_county">Select Your County</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Forums Grid -->
+                <div class="forums-grid" id="forums-grid">
+                    <div class="empty-state" id="forums-empty">
+                        <div class="empty-icon">🗺️</div>
+                        <p data-i18n="forums_empty">Select your county to find nearby forums and civic events</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ─── SECTION 7: BILL IMPACT ─── -->
+        <section class="section" id="impact-section">
+            <div class="container">
+                <div class="section-header">
+                    <h2 class="section-title" data-i18n="impact_title">📈 Bill Impact Analysis</h2>
+                    <p class="section-subtitle" data-i18n="impact_subtitle">How bills affect economy and livelihoods</p>
+                </div>
+                <div class="impact-grid" id="impact-grid">
+                    <div class="card skeleton-card"><div class="skeleton skeleton-title"></div><div class="skeleton skeleton-text"></div></div>
+                    <div class="card skeleton-card"><div class="skeleton skeleton-title"></div><div class="skeleton skeleton-text"></div></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ─── SECTION 8: FEEDBACK ─── -->
+        <section class="section" id="feedback-section">
+            <div class="container">
+                <div class="section-header">
+                    <h2 class="section-title" data-i18n="fb_title">📣 Your Feedback</h2>
+                    <p class="section-subtitle" data-i18n="fb_subtitle">Share your views on legislation to help shape policy</p>
+                </div>
+
+                <!-- Submit Feedback Form -->
+                <div class="card feedback-form-card">
+                    <h3 data-i18n="fb_form_title">Submit New Feedback</h3>
+                    <div class="input-group" style="margin-bottom:1rem;">
+                        <span class="input-icon">📜</span>
+                        <select id="feedback-bill-select" class="input-field select-field">
+                            <option value="" data-i18n="fb_select_bill">Select a bill...</option>
+                        </select>
+                    </div>
+                    <div class="stance-toggle" id="feedback-stance-toggle">
+                        <button class="stance-btn stance-support" data-stance="support" onclick="selectStance('support', this, 'feedback-stance-toggle')">
+                            👍 <span data-i18n="support">Support</span>
+                        </button>
+                        <button class="stance-btn stance-oppose" data-stance="oppose" onclick="selectStance('oppose', this, 'feedback-stance-toggle')">
+                            👎 <span data-i18n="oppose">Oppose</span>
+                        </button>
+                        <button class="stance-btn stance-neutral" data-stance="neutral" onclick="selectStance('neutral', this, 'feedback-stance-toggle')">
+                            🤔 <span data-i18n="neutral">Neutral</span>
+                        </button>
+                    </div>
+                    <textarea id="feedback-general-comment" class="textarea" data-i18n-placeholder="feedback_placeholder" placeholder="Share your thoughts..." rows="4"></textarea>
+                    <div class="feedback-actions">
+                        <button class="mic-button mic-button-sm" id="mic-btn-general-feedback"
+                                onmousedown="startVoiceInput('general-feedback')" onmouseup="stopVoiceInput('general-feedback')"
+                                ontouchstart="startVoiceInput('general-feedback')" ontouchend="stopVoiceInput('general-feedback')"
+                                aria-label="Hold to speak feedback">
+                            <span class="mic-icon">🎤</span>
+                            <span class="mic-pulse"></span>
+                        </button>
+                        <button class="btn btn-primary" onclick="submitGeneralFeedback()">
+                            📤 <span data-i18n="submit_feedback">Submit Feedback</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Previous Feedback -->
+                <h3 class="subsection-title" data-i18n="fb_previous">📋 Your Previous Feedback</h3>
+                <div class="feedback-list" id="feedback-list">
+                    <div class="empty-state">
+                        <div class="empty-icon">📭</div>
+                        <p data-i18n="fb_empty">No feedback submitted yet. Your voice matters!</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ─── SECTION 9: PROFILE ─── -->
+        <section class="section" id="profile-section">
+            <div class="container">
+                <div class="section-header">
+                    <h2 class="section-title" data-i18n="profile_title">👤 Your Profile</h2>
+                    <p class="section-subtitle" data-i18n="profile_subtitle">Manage your settings and view your activity</p>
+                </div>
+
+                <div class="profile-layout">
+                    <!-- Profile Card -->
+                    <div class="card profile-card">
+                        <div class="profile-card-header">
+                            <div class="profile-avatar-lg" id="profile-avatar-lg">
+                                <span id="profile-initials-lg">U</span>
+                            </div>
+                            <h3 id="profile-name">User</h3>
+                            <p class="text-secondary" id="profile-county">County not set</p>
+                            <span class="badge badge-active" id="profile-lang-badge">English</span>
+                        </div>
+                    </div>
+
+                    <!-- Edit Profile Form -->
+                    <div class="card profile-edit-card">
+                        <h3 data-i18n="edit_profile">✏️ Edit Profile</h3>
+                        <form id="profile-form" onsubmit="saveProfile(event)">
+                            <div class="form-group">
+                                <label for="profile-name-input" data-i18n="label_name">Full Name</label>
+                                <div class="input-group">
+                                    <span class="input-icon">👤</span>
+                                    <input type="text" id="profile-name-input" class="input-field" data-i18n-placeholder="placeholder_name" placeholder="Enter your name">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="profile-county-select" data-i18n="label_county">County</label>
+                                <div class="input-group">
+                                    <span class="input-icon">📍</span>
+                                    <select id="profile-county-select" class="input-field select-field">
+                                        <option value="" data-i18n="select_county">Select county</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="profile-lang-select" data-i18n="label_language">Preferred Language</label>
+                                <div class="input-group">
+                                    <span class="input-icon">🌍</span>
+                                    <select id="profile-lang-select" class="input-field select-field">
+                                        <option value="en">English</option>
+                                        <option value="sw">Kiswahili</option>
+                                        <option value="ki">Kikuyu</option>
+                                        <option value="sh">Sheng</option>
+                                        <option value="lu">Luo</option>
+                                        <option value="ka">Kalenjin</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <button type="submit" class="btn btn-primary btn-block">
+                                💾 <span data-i18n="save_profile">Save Profile</span>
+                            </button>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Interaction History -->
+                <h3 class="subsection-title" data-i18n="history_title">📊 Your Activity Timeline</h3>
+                <div class="timeline" id="interaction-timeline">
+                    <div class="empty-state">
+                        <div class="empty-icon">📊</div>
+                        <p data-i18n="history_empty">Start exploring bills to see your activity here</p>
+                    </div>
+                </div>
+
+                <!-- Feedback History -->
+                <h3 class="subsection-title" data-i18n="fb_history_title">📣 Your Feedback History</h3>
+                <div class="feedback-list" id="profile-feedback-list">
+                    <div class="empty-state">
+                        <div class="empty-icon">📭</div>
+                        <p data-i18n="fb_empty">No feedback submitted yet</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- ═══════════════════════════════════════════ -->
+    <!-- FOOTER                                     -->
+    <!-- ═══════════════════════════════════════════ -->
+    <footer class="footer" id="app-footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <span class="footer-logo">🛡️ TAMBUA</span>
+                    <p class="footer-tagline" data-i18n="tagline_full">Sauti Yako ni Kenya — Your Voice is Kenya</p>
+                </div>
+                <div class="footer-info">
+                    <p class="footer-built">Built for <strong>Democracy & AI Hackathon 2026</strong></p>
+                    <p class="footer-org"><strong>Mozilla Foundation</strong> & <strong>KamiLimu</strong></p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 Tambua. <span data-i18n="footer_rights">Empowering civic literacy through AI.</span></p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- ═══════════════════════════════════════════ -->
+    <!-- MODAL                                      -->
+    <!-- ═══════════════════════════════════════════ -->
+    <div class="modal-overlay" id="modal-overlay" onclick="closeModal()">
+        <div class="modal" id="modal" onclick="event.stopPropagation()">
+            <button class="modal-close" onclick="closeModal()" aria-label="Close modal">&times;</button>
+            <div class="modal-content" id="modal-content"></div>
+        </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════ -->
+    <!-- SCRIPTS                                    -->
+    <!-- ═══════════════════════════════════════════ -->
+    <script src="/static/js/app.js"></script>
+    <script src="/static/js/voice.js"></script>
+    <script src="/static/js/bills.js"></script>
+    <script src="/static/js/profile.js"></script>
+
+</body>
+</html>
