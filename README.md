@@ -13,7 +13,7 @@
 | Musila Peter | Backend Engineer, AI/ML integrations, research on data | [@musilapeter](https://github.com/musilapeter) |
 
 **Team Name:** Tambua
-**University:** KamiLimu / Mozilla Foundation Cohort
+**University:** University of Embu
 
 ---
 
