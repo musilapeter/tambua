@@ -15,13 +15,14 @@ from dotenv import load_dotenv
 # Load environment variables from project root .env
 load_dotenv(os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", ".env"))
 
-import google.generativeai as genai
+from openai import OpenAI
 
 # ---------------------------------------------------------------------------
 # Configuration
 # ---------------------------------------------------------------------------
-GEMINI_API_KEY = os.getenv("GEMINI_API_KEY", "")
-MODEL_NAME = "gemini-2.5-flash"
+DEEPSEEK_API_KEY = os.getenv("DEEPSEEK_API_KEY", "")
+DEEPSEEK_API_BASE = os.getenv("DEEPSEEK_API_BASE", "https://api.deepseek.com/v1")
+MODEL_NAME = "deepseek-v4-pro"
 
 # Language display names for prompt construction
 LANGUAGE_NAMES = {
@@ -35,20 +36,18 @@ LANGUAGE_NAMES = {
 
 
 def _configure():
-    """Configure the Gemini SDK. Call before every generation."""
-    if not GEMINI_API_KEY or GEMINI_API_KEY == "your-gemini-api-key-here":
+    """Verify DeepSeek configuration. Call before every generation."""
+    if not DEEPSEEK_API_KEY or DEEPSEEK_API_KEY == "your-deepseek-api-key-here" or not DEEPSEEK_API_KEY.strip():
         raise RuntimeError(
-            "GEMINI_API_KEY is not set. "
-            "Please add a valid key to d:/tambua/.env — "
-            "get one free at https://aistudio.google.com/"
+            "DEEPSEEK_API_KEY is not set. "
+            "Please add a valid key to d:/tambua/.env"
         )
-    genai.configure(api_key=GEMINI_API_KEY)
 
 
-def _get_model():
-    """Return a configured GenerativeModel instance."""
+def _get_client():
+    """Return a configured OpenAI client instance for DeepSeek."""
     _configure()
-    return genai.GenerativeModel(MODEL_NAME)
+    return OpenAI(api_key=DEEPSEEK_API_KEY, base_url=DEEPSEEK_API_BASE)
 
 
 def _lang(code: str) -> str:
@@ -56,26 +55,31 @@ def _lang(code: str) -> str:
     return LANGUAGE_NAMES.get(code, "English")
 
 
-def _safe_generate(prompt: str, max_tokens: int = 4096) -> str:
+def _safe_generate(prompt: str, max_tokens: int = 4096, response_format=None) -> str:
     """
-    Generate text from Gemini with error handling.
+    Generate text from DeepSeek with error handling.
     Returns the generated text or a user-friendly error message.
     """
     try:
-        model = _get_model()
-        response = model.generate_content(
-            prompt,
-            generation_config=genai.types.GenerationConfig(
-                max_output_tokens=max_tokens,
-                temperature=0.7,
-            ),
-        )
-        return response.text
+        client = _get_client()
+        kwargs = {
+            "model": MODEL_NAME,
+            "messages": [
+                {"role": "user", "content": prompt}
+            ],
+            "temperature": 0.7,
+            "max_tokens": max_tokens,
+        }
+        if response_format:
+            kwargs["response_format"] = response_format
+
+        response = client.chat.completions.create(**kwargs)
+        return response.choices[0].message.content
     except RuntimeError as exc:
         # Missing API key
-        return f"⚠️ Configuration error: {exc}"
+        return f"[Configuration error] {exc}"
     except Exception as exc:
-        return f"⚠️ AI service error: {exc}. Please try again shortly."
+        return f"[AI service error] {exc}. Please try again shortly."
 
 
 # ---------------------------------------------------------------------------
@@ -396,9 +400,9 @@ if __name__ == "__main__":
     print("Testing AI engine configuration...")
     try:
         _configure()
-        print("✅ Gemini API key configured successfully.")
+        print("[OK] DeepSeek API configuration verified.")
     except RuntimeError as e:
-        print(f"❌ {e}")
+        print(f"[ERROR] {e}")
 
     # Quick generation test with a dummy bill snippet
     sample = "This bill proposes to increase VAT on petroleum products from 8% to 16%."
